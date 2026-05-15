@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>ELECTRICITY AND MAGNETISM</title>
+    <style>
+        :root {
+            --bg-color: #2d0a1f; 
+            --glass-bg: rgba(220, 20, 60, 0.08);
+            --text-color: #ff6b6b;
+            --border: 1px solid rgba(220, 20, 60, 0.4);
+            --highlight: #ff2400; /* Yellow for selection */            
+        }
+
+        body { 
+            background-color: var(--bg-color); 
+            color: beige; 
+            font-family: 'Segoe UI', sans-serif; 
+            min-height: 100vh; margin: 0; 
+            display: flex; flex-direction: column; align-items: center; 
+            /* This line prevents browser double-tap zoom */
+            touch-action: manipulation;
+        }
+
+        nav { width: 100%; padding: 20px; text-align: center; background: rgba(0,0,0,0.2); border-bottom: var(--border); margin-bottom: 20px; }
+        nav a { color: var(--text-color); margin: 0 15px; text-decoration: none; cursor: pointer; font-weight: bold; }
+
+        #app { 
+            width: 90vw; max-width: 1000px; padding: 40px; margin-bottom: 40px; 
+            background: var(--glass-bg); backdrop-filter: blur(15px); 
+            border-radius: 30px; border: var(--border); position: relative;
+        }
+
+        #lesson-scoreboard { 
+            text-align: right; color: var(--text-color); margin-bottom: 20px; font-weight: bold; 
+            border-bottom: var(--border); padding-bottom: 10px; display: flex; 
+            justify-content: space-between; align-items: center; 
+        }
+
+        h1 { color: var(--text-color); font-size: 2.2rem; margin-top: 0; }
+        
+        /* Media Containers */
+        .media-container { width: 100%; margin: 20px 0; border-radius: 15px; overflow: hidden; border: var(--border); }
+        .media-container iframe { width: 100%; height: 400px; display: block; }
+        .media-container img { width: 100%; height: auto; display: block; }
+        
+        .discussion-box { padding: 20px; margin-bottom: 20px; cursor: pointer;}
+
+        /* References Styling */
+        .references-page-box { padding: 20px; background: rgba(0,0,0,0.2); border-radius: 15px; border-left: 4px solid var(--text-color); }
+        #ref-list { list-style: square; padding-left: 20px; color: #eee; line-height: 1.8; }
+
+        button { padding: 15px; background: rgba(255, 255, 255, 0.1); color: white; border: var(--border); border-radius: 10px; cursor: pointer; transition: 0.3s; font-size: 1rem; }
+        button:hover:not(:disabled) { background:  #ff6b6b; color: #2d0a1f; }
+        button:disabled { opacity: 0.6; cursor: not-allowed; border: 1px solid #555; }
+        
+        button.selected { border: 2px solid var(--highlight); background: rgba(250, 204, 21, 0.2); }
+        
+        .btn-trigger { width: 100%; background: #5d4037; margin-top: 10px; }
+        #questions-section { display: none; margin-top: 20px; }
+        .question-block { margin-bottom: 20px; background: rgba(255,255,255,0.03); padding: 20px; border-radius: 15px; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        
+        footer { margin-top: auto; padding: 20px; opacity: 0.8; text-align: center; border-top: var(--border); width: 100%; background: rgba(0,0,0,0.2); }
+    
+    /* Modal Styling */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0; top: 0;
+    width: 100%; height: 100%; 
+    background-color: rgba(0,0,0,0.8); /* Darken background */
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #064e3b;
+    margin: 5% auto;
+    padding: 20px;
+    border: var(--border);
+    width: 80%;
+    max-height: 80vh;
+    overflow-y: auto; /* Scroll if many questions */
+    border-radius: 20px;
+}
+
+.close-modal {
+    color: var(--text-color);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+    
+    .media-container div {
+    border-top: var(--border);
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+    
+    
+    /* Music Control Button */
+.music-btn {
+    background: #4a0e2e;/* Warm medium brown */
+    color: var(--text-color);
+    border: var(--border);
+    border-radius: 30%;
+    width: 6px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.music-btn:hover {
+    background: #ff6b6b
+    color: #2d0a1f;
+}
+
+/* Hidden YouTube Player Container */
+#yt-background-player {
+    display: none;
+}
+    
+            .push-right {
+    margin-left: auto;
+}
+    
+    </style>
+</head>
+<body>
+    
+    <div id="yt-background-player"></div>
+
+    <nav>
+        <a onclick="renderView('home')">HOME</a>
+        <a onclick="renderView('lesson')">LESSON</a>
+        <a onclick="renderView('references')">REFERENCES</a>
+        <a onclick="renderView('about')">ABOUT US</a>
+    </nav>
+
+    <div id="app">
+        <div id="main-content"></div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 AIGHAM | Prepared and modified by John Renz I. Vertudazo</p>
+    </footer>
+
+    <script>
+        const slides = [
+            {
+                title: "Introduction",
+                discussion: {
+            en: "In summary, waves serve as carriers of energy without transporting matter, and they are broadly classified into mechanical waves such as sound that require a medium to travel, and electromagnetic waves such as light that can propagate through a vacuum. Mechanical waves move either in transverse or longitudinal forms, with sound traveling fastest in solids due to closely packed molecules, while its properties like pitch and loudness are determined by frequency and amplitude respectively. Light demonstrates distinct behaviors including reflection, refraction, and absorption, and white light is actually a combination of all visible colors. Arranged from low to high energy, the Electromagnetic Spectrum ranges from radio waves and microwaves to visible light, ultraviolet rays, X-rays, and gamma rays, following the principle that higher frequency means greater energy and potential risk. These principles are essential to everyday innovations, enabling applications from musical instruments and medical imaging technologies like ultrasound and X-rays, to wireless communication systems used in mobile phones and broadcasting, proving that the physics of waves and optics form the foundation of how we perceive the world and advance modern technology.",
+            fil: "Maligayang pagdating sa aralin tungkol sa Puwersa at Galaw."
+        },
+                assets: [
+                    { type: 'image', url: 'https://i.imgur.com/gsdoAuG.gif', title: 'Push and Pull Forces'},
+                    { type: 'image', url: 'https://i.imgur.com/eSq6zdU.gif'}
+                ],
+                references: ["GeeksforGeeks. (2021, July 19). Force. GeeksforGeeks. https://www.geeksforgeeks.org/physics/force/"],
+                questions: [
+                    { q: "", 
+                        options: [
+                        {t:"", c:false},
+                        {t:"", c:false}, 
+                        {t:"", c:false},
+                        {t:"", c:false}                       
+                        ], 
+                        answered: false, userCorrect: false, selectedIndex: null },
+                
+                ]
+            },
+            {
+                title: "",
+                discussion: {
+            en: "In summary, waves serve as carriers of energy without transporting matter, and they are broadly classified into mechanical waves such as sound that require a medium to travel, and electromagnetic waves such as light that can propagate through a vacuum. Mechanical waves move either in transverse or longitudinal forms, with sound traveling fastest in solids due to closely packed molecules, while its properties like pitch and loudness are determined by frequency and amplitude respectively. Light demonstrates distinct behaviors including reflection, refraction, and absorption, and white light is actually a combination of all visible colors. Arranged from low to high energy, the Electromagnetic Spectrum ranges from radio waves and microwaves to visible light, ultraviolet rays, X-rays, and gamma rays, following the principle that higher frequency means greater energy and potential risk. These principles are essential to everyday innovations, enabling applications from musical instruments and medical imaging technologies like ultrasound and X-rays, to wireless communication systems used in mobile phones and broadcasting, proving that the physics of waves and optics form the foundation of how we perceive the world and advance modern technology.",
+            fil: "Sa kabuuan, ang mga alon ay nagsisilbing tagadala ng enerhiya nang hindi naglilipat ng materya. Malawak itong nahahati sa dalawang uri: mekanikal na alon tulad ng tunog na nangangailangan ng daluyan upang makapaglakbay, at mga along elektromagnetiko tulad ng liwanag na kayang kumalat kahit sa kawalan ng hangin o espasyo. Ang mga mekanikal na alon ay gumagalaw sa paraang pahalang o paayon. Ang tunog ay pinakamabilis maglakbay sa mga solido dahil mas dikit-dikit ang mga molekula nito, samantalang ang mga katangian nito tulad ng tono at lakas ng tunog ay nakabatay ayon sa dalas at lapad ng alon. Ang liwanag naman ay nagpapakita ng iba’t ibang ugali tulad ng pagmumuni, pagbaluktot, at pagsipsip. Ang puting liwanag ay binubuo ng lahat ng kulay na nakikita ng ating mata. Kapag inayos mula mababa hanggang mataas na antas ng enerhiya, ang Iskala ng Along Elektromagnetiko ay nagsisimula sa mga along radyo at mikroalon, patungo sa nakikitang liwanag, sinag na ultraviolet, sinag-X, at mga sinag gamma. Sumusunod ito sa batas na habang mas mataas ang dalas, mas malaki ang enerhiya at maaaring mas mapanganib ito. Ang mga prinsipyong ito ay mahalaga sa mga imbensyon at gamit sa araw-araw. Ito ang nagbibigay-kakayahan sa mga bagay tulad ng mga instrumentong pangmusika, kagamitang medikal tulad ng ultrasound at X-ray, pati na rin ang mga sistema ng komunikasyon tulad ng mga cellphone at pagsasahimpapawid. Pinatutunayan nito na ang agham ng mga alon at optika ang nagsisilbing pundasyon kung paano natin nauunawaan ang mundo at paano umuunlad ang makabagong teknolohiya."
+         },
+                assets: [
+                    { type: 'image', url: 'https://i.imgur.com/sSKM02O.gif' },
+                    { type: 'image', url: 'https://i.imgur.com/V75Fc51.gif' },
+                    { type: 'image', url: 'https://i.imgur.com/KX23Bj8.gif' }
+                ],
+                references: ["Connell, K. (2013, November 3). Balanced Force Diagram. Pinterest. https://in.pinterest.com/pin/16536723605558939/", "File:Friction Animation 2 Blocks.gif - Wikimedia Commons. (2023, March 3). Wikimedia.org. https://commons.wikimedia.org/wiki/File:Friction_Animation_2_Blocks.gif", "https://starchild.gsfc.nasa.gov/docs/StarChild/questions/question30.html"],
+                questions: [
+                { q: "", 
+                        options: [
+                        {t:"", c:false},
+                        {t:"", c:false}, 
+                        {t:"", c:false},
+                        {t:"", c:false}                       
+                        ], 
+                        answered: false, userCorrect: false, selectedIndex: null },
+                
+                ]
+            },
+            {
+                title: "",
+                discussion: {
+            en: "Welcome to the lesson on Force and Motion.",
+            fil: "Maligayang pagdating sa aralin tungkol sa Puwersa at Galaw."
+        },
+                assets: ["", ""
+                ],
+                references: [],
+                questions: [
+                { q: "", 
+                        options: [
+                        {t:"", c:false},
+                        {t:"", c:false}, 
+                        {t:"", c:false},
+                        {t:"", c:false}                       
+                        ], 
+                        answered: false, userCorrect: false, selectedIndex: null },
+                ]
+            },
+            {
+                title: "",
+                discussion: {
+            en: "Welcome to the lesson on Force and Motion.",
+            fil: "Maligayang pagdating sa aralin tungkol sa Puwersa at Galaw."
+        },
+                assets: [
+                ],
+                references: [],
+                questions: [
+                { q: "", 
+                        options: [
+                        {t:"", c:false},
+                        {t:"", c:false}, 
+                        {t:"", c:false},
+                        {t:"", c:false}                       
+                        ], 
+                        answered: false, userCorrect: false, selectedIndex: null },
+                ]
+            },    
+             {
+                title: "",
+                discussion: {
+            en: "Welcome to the lesson on Force and Motion.",
+            fil: "Maligayang pagdating sa aralin tungkol sa Puwersa at Galaw."
+        },
+                 assets: [
+                ],
+                references: [],
+                questions: [
+                { q: "", 
+                        options: [
+                        {t:"", c:false},
+                        {t:"", c:false}, 
+                        {t:"", c:false},
+                        {t:"", c:false}                       
+                        ], 
+                        answered: false, userCorrect: false, selectedIndex: null },
+                ]
+            },
+             {
+                title: "",
+                discussion: {
+            en: "Welcome to the lesson on Force and Motion.",
+            fil: "Maligayang pagdating sa aralin tungkol sa Puwersa at Galaw."
+        },
+                assets: [
+                ],
+                references: [],
+                questions: [
+                { q: "",
+                    options: [
+                    {t:"", c:false},
+                    {t:"", c:false},
+                    {t:"", c:false},
+                    {t:"", c:false},
+                    ],
+                      answered: false, userCorrect: false, selectedIndex: null },
+                ]
+            },
+        ];
+
+        function shuffle(array) { return [...array].sort(() => Math.random() - 0.5); }
+
+        const sessionSlides = slides.map(s => ({
+            ...s,
+            questions: shuffle(s.questions.map(q => ({ ...q, options: shuffle(q.options) })))
+        }));
+
+        let currentIndex = 0;
+        let tapCount = 0;
+        let tapTimer = null;
+    let currentLang = 'en'; // Default to English
+
+        function renderView(view) {
+            window.speechSynthesis.cancel(); // Stop audio when changing views
+            const container = document.getElementById('main-content');
+            if (view === 'home') {
+                container.innerHTML = `<h1>FORCE, MOTION AND ENERGY</h1><br><br>This learning material aims to cognitively distinguish between force and motion, classify different types of forces, and explain Newton’s Three Laws of Motion, as well as define and relate key terms such as speed, velocity, acceleration, work, and energy. It intends to affectively develop awareness of the importance of following safety measures, value accuracy in measurement and calculation, and recognize the relevance of physics principles in daily life and community development. It also seeks to psychomotorically solve problems involving force, mass, acceleration, speed, velocity, work and energy, analyze motion using formulas and relationships, and apply scientific concepts in designing or evaluating structures and systems.<br><br>Artificial Intelligence was utilized to assist in refining grammar, ensuring clarity, and enhancing language accuracy to facilitate better learning.<br><br>It is important to note that this work is protected intellectual property; sharing, distributing, or reproducing any part of this material without the explicit permission of the creator and the institution is strictly prohibited and may result in legal and disciplinary consequences.`;
+            } 
+            else if (view === 'about') {
+                container.innerHTML = `<h1>About Us</h1><br><br>The creator of this material is dedicated to producing high-quality educational resources that make learning Science accessible and engaging. The content is designed to guide students in mastering key concepts through clear explanations and interactive visual aids. The creator of this material utilizes modern technology, including Artificial Intelligence, to ensure clarity, proper grammar, and effective communication throughout the content. The creator of this material upholds the values of academic integrity, originality, and respect for intellectual property rights.<br><br>If you have any questions, you may contact us through: <b>vertudazojr9@gmail.com</b>`;
+            } 
+            else if (view === 'references') {
+                let allRefs = [];
+                sessionSlides.forEach(slide => {
+                    slide.references.forEach(ref => {
+                        if (!allRefs.includes(ref)) allRefs.push(ref);
+                    });
+                });
+                container.innerHTML = `
+                    <h1>References</h1>
+                    <div class="references-page-box">
+                        <ul id="ref-list">${allRefs.map(r => `<li>${r}</li>`).join('')}</ul>
+                    </div>
+                `;
+            }
+            else if (view === 'lesson') renderLesson();
+        }
+
+        function renderLesson() {
+    const container = document.getElementById('main-content');
+    const slide = sessionSlides[currentIndex];
+    
+    let mediaHtml = '';
+    if (slide.assets && slide.assets.length > 0) {
+        mediaHtml = slide.assets.map(asset => {
+            if (asset.type === 'video') {
+                return `<div class="media-container"><iframe src="${asset.url}" frameborder="0" allowfullscreen></iframe></div>`;
+            } else if (asset.type === 'image') {
+                return `
+                    <div class="media-container">
+                        <img src="${asset.url}" alt="Slide Visual">
+                        <div style="text-align: center; padding: 10px; background: rgba(0,0,0,0.3); color: var(--text-color); font-size: 0.9rem; font-style: italic;">
+                            ${asset.title || ''} 
+                        </div>
+                    </div>`;
+            }
+            return '';
+        }).join('');
+    }
+    
+    const musicLabel = userWantsMusic ? 'PAUSE' : 'PLAY';
+            
+    container.innerHTML = `
+        <div id="lesson-scoreboard" style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; gap: 8px;">
+                <button onclick="setLanguageAndRead('en')" style="background: #3b82f6; color: white; padding: 8px 12px; font-size: 0.9rem;">Read (EN)</button>
+                <button onclick="setLanguageAndRead('fil')" style="background: #10b981; color: white; padding: 8px 12px; font-size: 0.9rem;">Basahin (FIL)</button>
+            </div>
+                        
+            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 5px;">
+                <button id="music-toggle-btn" class="music-btn" onclick="toggleBackgroundMusic()">${musicLabel}</button>
+                <div style="font-size: 0.85rem; opacity: 0.9;">
+                    Overall: <span id="overall-score">${calculateTotalScore()}</span> | 
+                    Section: <span id="section-score">${calculateSectionScore()}</span>
+                </div>
+            </div>
+        </div>
+
+        <h1>${slide.title}</h1>
+            <div class="discussion-box" onclick="handleTap(sessionSlides[currentIndex].discussion)">
+                  <p id="discussion-text" style="font-size: 1.3rem;">
+                ${typeof slide.discussion === 'object' ? slide.discussion[currentLang] : slide.discussion}
+            </p>
+            ${mediaHtml}
+        </div>
+
+        <div id="questions-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" onclick="toggleQuestions()">&times;</span>
+                <h2 style="color: var(--text-color)">Section Quiz</h2>
+                <div id="questions-section"></div>
+            </div>
+        </div>
+
+        <div style="display:flex; justify-content:center; gap:20px; margin-top:20px;">
+            <button onclick="prevSlide()">Previous</button>
+            <button onclick="nextSlide()">Next</button>
+            <button class="push-right" onclick="toggleQuestions()" style="background: #facc15; color: #064e3b;">Show Questions</button>
+        </div>
+    `;
+    renderQuestions();
+}
+    
+    
+
+                // --- TTS and Tap Logic ---
+        
+        function stripHtml(html) {
+            return html.replace(/<[^>]*>/g, ' ');
+        }
+
+        // THE MISSING FUNCTION
+        function playSpeech(text) {
+            // 1. Cancel existing speech
+            window.speechSynthesis.cancel();
+
+            // 2. Handle object (en/fil) vs string
+            let rawText = typeof text === 'object' ? text[currentLang] : text;
+            
+            // 3. Clean the text for TTS
+            let cleanText = stripHtml(rawText)
+                .replace(/\[.*?\]/g, '')        // Remove brackets
+                .normalize("NFD")               // Fix hidden encoding
+                .replace(/[\u0300-\u036f]/g, "") // Strip accents
+                .replace(/\s+/g, ' ')           // Clean spaces
+                .trim()
+                .toLowerCase();                 // Prevent spelling out caps
+
+            if (!cleanText) return;
+
+            // 4. Setup Utterance
+            const utterance = new SpeechSynthesisUtterance(cleanText);
+            const voices = window.speechSynthesis.getVoices();
+
+            // 5. Voice Selection
+            if (currentLang === 'fil') {
+                const filVoice = voices.find(v => v.lang.includes('tl-PH') || v.lang.includes('fil-PH'));
+                if (filVoice) utterance.voice = filVoice;
+                utterance.lang = 'tl-PH';
+                utterance.rate = 0.9;
+            } else {
+                const enVoice = voices.find(v => v.lang.includes('en-US'));
+                if (enVoice) utterance.voice = enVoice;
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85;
+            }
+
+            // 6. Music Integration
+            if (userWantsMusic && ytPlayer) {
+                ytPlayer.pauseVideo();
+            }
+
+            // Resume music when done
+            utterance.onend = () => {
+                if (userWantsMusic && ytPlayer) ytPlayer.playVideo();
+            };
+
+            // 7. Speak with a tiny delay to ensure cancel() finished
+            setTimeout(() => {
+                window.speechSynthesis.speak(utterance);
+            }, 50);
+        }
+
+        function setLanguageAndRead(lang) {
+            window.speechSynthesis.cancel();
+            currentLang = lang;
+            
+            // Update the UI text
+            const slide = sessionSlides[currentIndex];
+            const textElement = document.getElementById('discussion-text');
+            if (textElement) {
+                textElement.innerText = typeof slide.discussion === 'object' ? slide.discussion[lang] : slide.discussion;
+            }
+            
+            // Trigger speech
+            playSpeech(slide.discussion);
+        }
+
+        function handleTap(text) {
+            tapCount++;
+            if (tapCount === 1) {
+                tapTimer = setTimeout(() => {
+                    if (window.speechSynthesis.paused) {
+                        window.speechSynthesis.resume();
+                    } else if (window.speechSynthesis.speaking) {
+                        window.speechSynthesis.pause();
+                    }
+                    tapCount = 0;
+                }, 300);
+            } else {
+                clearTimeout(tapTimer);
+                playSpeech(text);
+                tapCount = 0;
+            }
+        }
+
+        // Initialize voices for Chrome/Mobile browsers
+        window.speechSynthesis.onvoiceschanged = () => {
+            window.speechSynthesis.getVoices();
+        };
+
+        function renderQuestions() {
+            const qContainer = document.getElementById('questions-section');
+            const slide = sessionSlides[currentIndex];
+            qContainer.innerHTML = '';
+            slide.questions.forEach((q, qIndex) => {
+                const optionsText = q.options.map((opt, i) => `Option ${i + 1}: ${opt.t}`).join('. ');
+                 const fullSpeechText = `${q.q}. ${optionsText}`;
+                qContainer.innerHTML += `
+                    <div class="question-block">
+                   <p onclick="playSpeech('${fullSpeechText.replace(/'/g, "\\'")}')" style="cursor: pointer;">
+                    <strong>Q${qIndex + 1}:</strong> ${q.q} 
+                    <span style="font-size: 0.8rem; color: #a3e635; display: block;">(Tap to hear question)</span>
+                    </p>
+                         
+                        <div class="options-grid">
+                            ${q.options.map((opt, optIndex) => `
+                                <button class="${q.answered && q.selectedIndex === optIndex ? 'selected' : ''}" 
+                                        ${q.answered ? 'disabled' : ''} 
+                                        onclick="checkAnswer(${qIndex}, ${optIndex})">${opt.t}</button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function checkAnswer(qIdx, optIdx) {
+            const slide = sessionSlides[currentIndex];
+            const question = slide.questions[qIdx];
+            question.answered = true;
+            question.selectedIndex = optIdx;
+            question.userCorrect = question.options[optIdx].c;
+            alert(question.userCorrect ? "Correct!" : "Incorrect!");
+            renderQuestions();
+            updateScoreUI();
+        }
+
+        function calculateSectionScore() {
+            const slide = sessionSlides[currentIndex];
+            const correct = slide.questions.filter(q => q.userCorrect).length;
+            return `${correct}/${slide.questions.length}`;
+        }
+
+        function calculateTotalScore() {
+            let correct = 0; let total = 0;
+            sessionSlides.forEach(s => s.questions.forEach(q => { total++; if(q.userCorrect) correct++; }));
+            return `${correct}/${total}`;
+        }
+
+        function updateScoreUI() {
+            const overall = document.getElementById('overall-score');
+            const section = document.getElementById('section-score');
+            if(overall) overall.innerText = calculateTotalScore();
+            if(section) section.innerText = calculateSectionScore();
+        }
+
+        function toggleQuestions() {
+    const modal = document.getElementById('questions-modal');
+    const qSection = document.getElementById('questions-section');
+    
+    if (modal.style.display === 'block') {
+        modal.style.display = 'none';
+    } else {
+        modal.style.display = 'block';
+        qSection.style.display = 'block'; // Ensure internal container is visible
+    }
+}
+
+        function nextSlide() { 
+            window.speechSynthesis.cancel();
+            if(currentIndex < sessionSlides.length - 1) { currentIndex++; renderLesson(); } 
+        }
+        function prevSlide() { 
+            window.speechSynthesis.cancel();
+            if(currentIndex > 0) { currentIndex--; renderLesson(); } 
+        }
+
+        renderView('home');
+    
+    
+    
+    
+    // --- YOUTUBE PLAYLIST & PLAYER CONFIGURATION ---
+// You can add as many YouTube Video IDs in this array as you'd like
+const musicPlaylist = [
+    '_l4oZeihAdk', // Example Video ID 1
+    'M7lc1UVf-VE', // Example Video ID 2
+    'WPvGqX-TXP0'  // Example Video ID 3
+];
+
+let ytPlayer;
+let currentTrackIndex = 0;
+let userWantsMusic = false; // Tracks if the user toggled music "On"
+
+// Load the YouTube IFrame Player API asynchronously
+(function() {
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+})();
+
+// This function is automatically called by the YT API when ready
+function onYouTubeIframeAPIReady() {
+    ytPlayer = new YT.Player('yt-background-player', {
+        height: '0',
+        width: '0',
+        videoId: musicPlaylist[currentTrackIndex],
+        events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+        }
+    });
+}
+
+function onPlayerReady(event) {
+    // Player is loaded and ready.
+}
+
+// Automatically loops/plays the next track when the current one ends
+function onPlayerStateChange(event) {
+    if (event.data === YT.PlayerState.ENDED) {
+        currentTrackIndex = (currentTrackIndex + 1) % musicPlaylist.length;
+        ytPlayer.loadVideoById(musicPlaylist[currentTrackIndex]);
+    }
+}
+
+// Toggle play/pause music manually via the button
+function toggleBackgroundMusic() {
+    if (!ytPlayer) return;
+    
+    const btn = document.getElementById('music-toggle-btn');
+    
+    if (userWantsMusic) {
+        // Pause the music
+        ytPlayer.pauseVideo();
+        userWantsMusic = false;
+        if (btn) btn.innerHTML = 'PLAY'; // Play icon indicator
+    } else {
+        // Start playing
+        ytPlayer.playVideo();
+        userWantsMusic = true;
+        if (btn) btn.innerHTML = 'PAUSE'; // Pause icon indicator
+    }
+}
+    </script>
+</body>
+</html>
