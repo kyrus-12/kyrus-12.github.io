@@ -180,6 +180,7 @@
         }
 
         /* ===== MEDIA ===== */
+       
         .media-container {
             margin: 20px 0;
             padding: 15px;
@@ -207,6 +208,39 @@
             height: auto;
             border-radius: 8px;
             margin-bottom: 10px;
+        }
+
+        .media-container, .video-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .media-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 600;
+            color: black;
+            padding: 12px 15px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .media-container:has(.media-title) .img-fluid {
+            display: block;
+        }
+
+        .video-container:has(.media-title) {
+           padding-bottom: 0;
+        }
+
+        .video-wrapper .media-title {
+          bottom: 4px;
+            bottom-radius: 0 0 8px 8px;
         }
 
         /* ===== EMBEDS ===== */
@@ -1263,7 +1297,7 @@
                     <!-- START SCREEN -->
                     <div class="quiz-start-screen" id="discussion-quiz-start-screen">
                         <h2>Test Your Knowledge!</h2>
-                        <p><b>Direction:</b> Read each statement carefully. Choose <b>FACT</b> if the statement is true and choose <b>BLUFF</b> if the statement is false. </p>
+                        <p><b>Direction:</b> Read each statement carefully. Choose <b>FACT</b> if the statement is true and choose <b>BLUFF</b> if the statement is false. </p><br>
                         
                         <ul class="quiz-rules">
                             <li>10 Fact or Bluff Questions</li>
@@ -1350,8 +1384,8 @@
                 <p><b>MATTER</b></p>
                 Matter is anything that takes up space and has mass. This means that matter occupies room in the universe and contains material that can be measured. Everything around us, whether we can see it or not, is made of matter. For example, a rock is matter because it feels heavy and takes up space, while water is matter because it can be weighed and fills a container. Even air, though invisible, is matter because it fills balloons and rooms and has measurable mass.
                 <div class="media-container">
-                    <img src="https://i.imgur.com/VVHXRAk.gif" class="img-fluid" alt="Placeholder"><br>
-                    <i>Figure 1. States of Matter</i>
+                    <img src="https://i.imgur.com/VVHXRAk.gif" class="img-fluid" alt="Placeholder">
+                    <div class="media-title">Figure 1. States of Matter</div>
                 </div>
                 
                 <div class="media-container">
