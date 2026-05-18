@@ -187,6 +187,8 @@
             background: rgba(0,0,0,0.2);
             border-radius: 12px;
             border: 1px dashed var(--gold);
+
+            position: relative;
         }
 
         .video-wrapper {
@@ -196,57 +198,74 @@
             overflow: hidden;
         }
 
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            border-radius: 8px;
-        }
-
-        .img-fluid {
+        .media-container .img-fluid {
             width: 100%;
             height: auto;
             border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .media-container, .video-wrapper {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .media-title-flex {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            justify-items: center;
-            align-items: center;
-            display: flex;
-            font-size: 1rem;
-            font-weight: 600;
-            color: black;
-            padding: 12px 15px;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
-            z-index: 2;
-            pointer-events: none;
-        }
-            
-
-        .media-container:has(.media-title) .img-fluid,
-        .media-container:has(.media-title-flex) .img-fluid { 
             display: block;
         }
 
-        .video-container:has(.media-title) {
-           padding-bottom: 0;
+        .media-container:has(.media-title) {
+            padding: 15px;
         }
 
-        .video-wrapper .media-title,
-        .video-wrapper .media-title-flex {
-          bottom: 4px;
-            bottom-radius: 0 0 8px 8px;
+        .media-title {
+            display: none;
         }
+
+        .media-title:not(empty) {
+            display: block;
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            right: 15px;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 600;
+            color: black;
+            padding: 10px 15px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+            border-radius: 0 0 8px 8px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-title {
+            display: none;
+        }
+
+        .video-title:not(empty) {
+            display: block;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 600;
+            color: black;
+            padding: 10px 15px;
+            margin-top: 8px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            border-left: 3px solid black;
+        }
+
+        
+
 
         /* ===== EMBEDS ===== */
         .embed-container {
