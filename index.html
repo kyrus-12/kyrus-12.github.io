@@ -217,12 +217,10 @@
 
         .media-title {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-items: center;
-            align-items: center;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            text-align: center;
             font-size: 1rem;
             font-weight: 600;
             color: black;
@@ -230,6 +228,7 @@
             background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
             z-index: 2;
             pointer-events: none;
+            box-sizing: border-box;
         }
             
 
