@@ -216,9 +216,10 @@
         }
 
         .media-title {
-            bottom: 0;
-            left: 0;
-            right: 0;
+            position: absolute;
+            left: 50%;
+            transform: translasteX(-50%);
+            width: 100%; 
             text-align: center;
             font-size: 1rem;
             font-weight: 600;
@@ -227,7 +228,9 @@
             background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
             z-index: 2;
             pointer-events: none;
+            box-sizing: border-box;
         }
+            
 
         .media-container:has(.media-title) .img-fluid {
             display: block;
